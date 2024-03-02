@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Box, Button, VStack, Input, Heading, Select, Textarea, Text, Divider, useToast, Image } from "@chakra-ui/react";
+import { Box, Button, VStack, Input, Heading, Select, Textarea, Text, Divider, useToast, Image, useColorMode } from "@chakra-ui/react";
 import { FaMagic, FaBolt, FaSearchDollar, FaMusic, FaRegSave, FaPencilAlt } from "react-icons/fa";
 
 const Index = () => {
+  const { colorMode, toggleColorMode } = useColorMode();
   const [theme, setTheme] = useState("");
   const [artist, setArtist] = useState("");
   const [musicStyle, setMusicStyle] = useState("");
@@ -59,13 +60,19 @@ const Index = () => {
     });
   };
 
+  const [rhymeInput, setRhymeInput] = useState("");
+  const [critiqueInput, setCritiqueInput] = useState("");
+
   return (
-    <VStack spacing={4} align="stretch" m={8}>
-      <Heading as="h1" size="xl" textAlign="center">
+    <VStack spacing={4} align="stretch" m={8} bg={colorMode === "dark" ? "gray.800" : "white"} color={colorMode === "dark" ? "white" : "gray.800"}>
+      <Button onClick={toggleColorMode} mb={4}>
+        Toggle {colorMode === "light" ? "Dark" : "Light"}
+      </Button>
+      <Heading as="h1" size="xl" textAlign="center" bgGradient="linear(to-l, #7928CA, #FF0080)" bgClip="text">
         AI Songwriter Dashboard
       </Heading>
 
-      <Divider my={4} />
+      <Divider my={4} borderColor={colorMode === "dark" ? "gray.600" : "gray.200"} />
 
       <Box>
         <Input placeholder="Theme" value={theme} onChange={(e) => setTheme(e.target.value)} />
@@ -88,10 +95,12 @@ const Index = () => {
         <Button leftIcon={<FaBolt />} colorScheme="orange" onClick={handleNextLine}>
           Write the Next Line
         </Button>
-        <Button leftIcon={<FaPencilAlt />} ml={2} colorScheme="purple" onClick={handleRhyme}>
+        <Input placeholder="Help me Rhyme" value={rhymeInput} onChange={(e) => setRhymeInput(e.target.value)} mt={2} />
+        <Button leftIcon={<FaPencilAlt />} colorScheme="purple" onClick={handleRhyme}>
           Help me Rhyme
         </Button>
-        <Button leftIcon={<FaSearchDollar />} ml={2} colorScheme="pink" onClick={handleCritiqueSong}>
+        <Input placeholder="Critique my Song" value={critiqueInput} onChange={(e) => setCritiqueInput(e.target.value)} mt={2} />
+        <Button leftIcon={<FaSearchDollar />} colorScheme="pink" onClick={handleCritiqueSong}>
           Critique my Song
         </Button>
         <Button leftIcon={<FaRegSave />} ml={2} colorScheme="blue" onClick={handleSaveComposition}>
